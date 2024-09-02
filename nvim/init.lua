@@ -20,9 +20,31 @@ if astronvim.default_colorscheme then
   end
 end
 
+
+vim.cmd('set signcolumn=no')
 require("astronvim.utils").conditional_func(astronvim.user_opts("polish", nil, false), true)
 
 -- pirokaida do ruanzinho
 
 vim.keymap.set('v', '>', '>gv')
 vim.keymap.set('v', '<', '<gv')
+
+function Hello()
+  local filename = vim.fn.expand '%:t'
+  if not filename:match '_test.go' then
+    print 'Not a test file'
+    return
+  end
+  local test_name_ln = vim.fn.search('^func Test', 'cbnW')
+  local test_namee = vim.fn.getline(test_name_ln)
+  local test_name = vim.fn.match(test_namee, '^func Test(.+)%(')
+  local module_path = vim.fn.expand '%:h'
+  if not module_path:match '^/' then
+    module_path = './' .. module_path
+  end
+  local cmd = 'rg --files --glob "*.go" | entr -r go test -race -count=1 -v -run="^Test' ..
+      test_name .. '$" ' .. module_path
+  vim.api.nvim_command 'vsplit'
+  vim.api.nvim_command('terminal  ' .. cmd)
+  vim.cmd 'startinsert'
+end

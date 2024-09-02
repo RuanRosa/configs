@@ -6,4 +6,5 @@ return {
   -- { import = "astrocommunity.colorscheme.catppuccin" },
   { import = "astrocommunity.colorscheme.catppuccin", enabled = true },
   { import = "astrocommunity.colorscheme.everforest", enabled = true },
+  { import = "astrocommunity.colorscheme.sonokai", enabled = true },
 }
